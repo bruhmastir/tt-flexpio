@@ -32,7 +32,8 @@ module flexpio_core (
         .rst_n(rst_n),
         .jmp_en(jmp_en),
         .jmp_addr(jmp_addr),
-        .pc(pc_addr)
+        .pc(pc_addr),
+        .waiting(timer_busy)
     );
 
     // Instantiate Instruction Memory

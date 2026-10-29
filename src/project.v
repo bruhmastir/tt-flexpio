@@ -31,8 +31,8 @@ module tt_um_bruhmastir_flexpio (
     // Instantiate our custom FlexPIO core
     flexpio_core core_inst (
         .clk(clk),
-        .rst_n(rst_n)
-        // .gio(uio_in) // Route Tiny Tapeout's input path directly into our core's gio bus
+        .rst_n(rst_n),
+        .gio(gio) // Route the bridged pin input into the core's gio bus
     );
 
     // Route our core's internal driver states directly to Tiny Tapeout's UIO ports
