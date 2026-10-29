@@ -6,7 +6,15 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+# PROJECT_SOURCES = project.v
+# List all Verilog files needed for the simulation
+PROJECT_SOURCES += project.v
+PROJECT_SOURCES += flexpio_core.v
+PROJECT_SOURCES += program_counter.v
+PROJECT_SOURCES += instruction_memory.v
+PROJECT_SOURCES += register_file.v
+PROJECT_SOURCES += instruction_decoder.v
+PROJECT_SOURCES += wait_timer.v
 
 ifneq ($(GATES),yes)
 

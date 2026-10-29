@@ -1,42 +1,45 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+Jane Street posted this [challenge](https://blog.janestreet.com/protocol-emulator-asic-competition/) recently and this is my attempt at the challenge. I will be updating the repo as I go along learning and implementing into my design.
 
-# Tiny Tapeout Verilog Project Template
 
-- [Read the documentation for project](docs/info.md)
+# FlexPIO: Open-Source Protocol Emulator ASIC
 
-## What is Tiny Tapeout?
+FlexPIO is a compact, programmable soft-core protocol emulator designed for Tiny Tapeout on the **IHP 130nm CMOS5L** process. It acts as a lightweight programmable state machine capable of bit-banging complex serial protocols (like UART, SPI, I2C, or custom interfaces) with cycle-accurate precision.
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+## Key Features
+* **Custom ISA:** Designed for minimal area and high-speed execution (`SET`, `WAIT`, `IN`, `JMP`).
+* **8 Bidirectional GPIOs (`gio[7:0]`):** Direct multi-pin bitmask control and input reading.
+* **Instruction Memory:** 128-word 16-bit instruction store.
+* **Scratch Registers:** 8 general-purpose registers (`R0`–`R7`) for state management.
+* **Tiny Tapeout Integration:** Fully constrained for a 6x4 tile layout on the IHP 130nm process.
 
-To learn more and get started, visit https://tinytapeout.com.
+---
 
-## Set up your Verilog project
+## Instruction Set Architecture (ISA)
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+FlexPIO uses fixed 16-bit instruction words divided by 3-bit opcodes:
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+| Opcode | Mnemonic | Description | Bit Format |
+| :---: | :--- | :--- | :--- |
+| `000` | `SET` | Set/clear masked pins | `[15:13]=000`, `[12]=val`, `[11:4]=mask`, `[3:0]=0` |
+| `001` | `WAIT` | Pause execution for N cycles | `[15:13]=001`, `[12:10]=0`, `[9:0]=cycle_count` |
+| `010` | `IN`   | Sample input pins into a register | *(Configured in MVP expansion)* |
+| `011` | `JMP`  | Unconditional or conditional branch | *(Configured in MVP expansion)* |
 
-## Enable GitHub actions to build the results page
+---
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+## Simulation & Verification
 
-## Resources
+FlexPIO uses **Cocotb** and **Icarus Verilog** for automated testbenches and waveform generation.
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+### Running Tests
+1. Navigate to the test directory:
+    ```bash
+    cd test
+    ```
 
-## What next?
+2. Run the simulation suite:
+    ```bash
+    make
+    ```
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+3. Inspect the generated FST waveform `(test/tb.fst)` using GTKWave or Surfer.
