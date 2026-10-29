@@ -1,5 +1,7 @@
 Jane Street posted this [challenge](https://blog.janestreet.com/protocol-emulator-asic-competition/) recently and this is my attempt at the challenge. I will be updating the repo as I go along learning and implementing into my design.
 
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+
 
 # FlexPIO: Open-Source Protocol Emulator ASIC
 
