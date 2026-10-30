@@ -15,8 +15,8 @@ module instruction_decoder (
 
     // Field extractions (overlapped depending on instruction type)
     // For SET: pin mask and value
-    assign pin_mask    = instr[7:0];   // 8-bit mask for our 8 GPIO pins
-    assign pin_val     = instr[8];     // High or low value
+    assign pin_mask    = instr[11:4];   // 8-bit mask for our 8 GPIO pins
+    assign pin_val     = instr[3];     // High or low value
 
     // For WAIT: 10-bit cycle count
     assign wait_cycles = instr[9:0];

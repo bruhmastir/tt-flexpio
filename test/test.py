@@ -28,7 +28,7 @@ async def test_project(dut):
     dut._log.info("Reset released, stepping through instructions...")
 
     # Monitor pins across multiple execution cycles
-    for step in range(5):
+    for step in range(35):
         await ClockCycles(dut.clk, 10)
         current_time = get_sim_time(unit='ns')
         dut._log.info(f"Time {current_time} ns: uio_out = {bin(dut.uio_out.value)}, uio_oe = {bin(dut.uio_oe.value)}")
